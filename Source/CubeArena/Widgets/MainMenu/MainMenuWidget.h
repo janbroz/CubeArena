@@ -14,8 +14,13 @@ class CUBEARENA_API UMainMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	virtual void NativeConstruct()	override;
+	
+public:
+	UFUNCTION(BlueprintCallable)
+		void RefreshSessions();
+	UFUNCTION(BlueprintImplementableEvent)
+		void BP_RefreshSessions();
 
-	
-	
-	
+
 };
