@@ -8,7 +8,7 @@
 #include "Runtime/Engine/Classes/Engine/LocalPlayer.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "OnlineSubsystemUtils.h"
-
+#include "Player/MenuPlayerController.h"
 
 UCubeGameInstance::UCubeGameInstance(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -20,6 +20,8 @@ UCubeGameInstance::UCubeGameInstance(const FObjectInitializer& ObjectInitializer
 	OnJoinSessionCompleteDelegate = FOnJoinSessionCompleteDelegate::CreateUObject(this, &UCubeGameInstance::OnJoinSessionComplete);
 	OnDestroySessionCompleteDelegate = FOnDestroySessionCompleteDelegate::CreateUObject(this, &UCubeGameInstance::OnDestroySessionComplete);
 	OnFindSessionsCompleteDelegate = FOnFindSessionsCompleteDelegate::CreateUObject(this, &UCubeGameInstance::OnFindSessionsComplete);
+
+	CurrentLocation = EPlayerLocation::MainMenu;
 }
 
 
@@ -163,6 +165,7 @@ void UCubeGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
 
 bool UCubeGameInstance::JoinSession(FUniqueNetIdRepl UserId, FName SessionName, const FOnlineSessionSearchResult& SearchResult)
 {
+	CurrentLocation = EPlayerLocation::Lobby;
 	bool bSuccessful = false;
 	IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
 	if (OnlineSub)
@@ -172,6 +175,11 @@ bool UCubeGameInstance::JoinSession(FUniqueNetIdRepl UserId, FName SessionName, 
 		{
 			OnJoinSessionCompleteDelegateHandle = Sessions->AddOnJoinSessionCompleteDelegate_Handle(OnJoinSessionCompleteDelegate);
 			bSuccessful = Sessions->JoinSession(*UserId, SessionName, SearchResult);
+
+			if (!bSuccessful)
+			{
+				CurrentLocation = EPlayerLocation::MainMenu;
+			}
 		}
 	}
 
@@ -192,6 +200,13 @@ void UCubeGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionC
 			if (PlayerController && Sessions->GetResolvedConnectString(SessionName, TravelURL))
 			{
 				PlayerController->ClientTravel(TravelURL, ETravelType::TRAVEL_Absolute);
+			}
+
+			// Make sure that local players update the lobby widget correctly
+			AMenuPlayerController* MenuPC = Cast<AMenuPlayerController>(PlayerController);
+			if (MenuPC)
+			{
+				MenuPC->ShowLobby();
 			}
 		}
 	}
@@ -216,6 +231,7 @@ void UCubeGameInstance::OnDestroySessionComplete(FName SessionName, bool bWasSuc
 
 void UCubeGameInstance::StartOnlineGame()
 {
+	CurrentLocation = EPlayerLocation::Lobby;
 	ULocalPlayer* const Player = GetFirstGamePlayer();
 	HostSession(Player->GetPreferredUniqueNetId(), GameSessionName, true, true, 4);
 }
@@ -258,3 +274,17 @@ void UCubeGameInstance::DestroySessionAndLeaveGame()
 		}
 	}
 }
+
+//FOnlineSessionSettings* UCubeGameInstance::GetCurrentSessionSettings()
+//{
+//	FOnlineSessionSettings* CurrentSettings = nullptr;
+//	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
+//	if (OnlineSubsystem)
+//	{
+//		IOnlineSessionPtr Sessions = OnlineSubsystem->GetSessionInterface();
+//		if (Sessions.IsValid()) {
+//			CurrentSettings = Sessions->GetSessionSettings(GameSessionName);
+//		}
+//	}
+//	return CurrentSettings;
+//}

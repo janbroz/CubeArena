@@ -20,4 +20,12 @@ public:
 public:
 	TSubclassOf<class UMainMenuWidget> MainMenuWidgetClass;
 	class UMainMenuWidget* MainMenuWidget;
+
+	TSubclassOf<class ULobbyWidget> LobbyWidgetClass;
+	class ULobbyWidget* LobbyWidget;
+
+
+public:
+	UFUNCTION(BlueprintCallable)
+		void ShowLobby();
 };
