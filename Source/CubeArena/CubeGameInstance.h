@@ -46,6 +46,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Network|Test")
 		void DestroySessionAndLeaveGame();
 
+	/*UFUNCTION(BlueprintCallable, Category = "Network|Test")
+		class FOnlineSessionSettings* GetCurrentSessionSettings();*/
+
 public:
 	// Delegates to manage the network responses.
 	FOnCreateSessionCompleteDelegate OnCreateSessionCompleteDelegate;
