@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "CubeHero.generated.h"
 
 UCLASS()
-class CUBEARENA_API ACubeHero : public ACharacter
+class CUBEARENA_API ACubeHero : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -26,12 +27,20 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	
+	// Ability interface
+	UAbilitySystemComponent* GetAbilitySystemComponent() const override {return AbilitySystem;}
+
+	void PossessedBy(AController* NewController) override;
 public:
 	UPROPERTY(BlueprintReadWrite, Category = "PlayerInformation")
 		class UCameraComponent* Camera;
 	UPROPERTY(BlueprintReadWrite, Category = "PlayerInformation")
 		class USpringArmComponent* CameraArm;
 
-	
+	// This is for the abilities
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Abilities, meta = (AllowPrivateAccess = "true"))
+		class UAbilitySystemComponent* AbilitySystem;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Abilities)
+		TSubclassOf<class UGameplayAbility> Ability;
+
 };

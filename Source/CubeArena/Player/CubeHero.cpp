@@ -3,6 +3,7 @@
 #include "CubeHero.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "AbilitySystemComponent.h"
 
 // Sets default values
 ACubeHero::ACubeHero()
@@ -24,6 +25,7 @@ ACubeHero::ACubeHero()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm, USpringArmComponent::SocketName);
 
+	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
 
 }
 
@@ -32,6 +34,15 @@ void ACubeHero::BeginPlay()
 {
 	Super::BeginPlay();
 	
+
+	if (AbilitySystem)
+	{
+		if (HasAuthority() && Ability)
+		{
+			AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability.GetDefaultObject(), 1, 0));
+		}
+		AbilitySystem->InitAbilityActorInfo(this, this);
+	}
 }
 
 // Called every frame
@@ -46,5 +57,14 @@ void ACubeHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+
+	AbilitySystem->BindAbilityActivationToInputComponent(InputComponent, FGameplayAbilityInputBinds("ConfirmInput", "CancelInput", "AbilityInput"));
+}
+
+void ACubeHero::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	AbilitySystem->RefreshAbilityActorInfo();
 }
 

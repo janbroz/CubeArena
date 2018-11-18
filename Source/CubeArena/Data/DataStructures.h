@@ -26,6 +26,16 @@ enum class EPlayerLocation : uint8
 	Game			UMETA(DisplayValue = "Game")
 };
 
+// For the ability system
+UENUM(BlueprintType)
+enum class AbilityInput : uint8 
+{
+	UseAbility1		UMETA(DisplayName = "Use Spell 1"),
+	UseAbility2		UMETA(DisplayName = "Use Spell 2"),
+	UseAbility3		UMETA(DisplayName = "Use Spell 3"),
+	UseAbility4		UMETA(DisplayName = "Use Spell 4"),
+};
+
 class CUBEARENA_API DataStructures
 {
 public:

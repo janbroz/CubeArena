@@ -2,7 +2,7 @@
 
 #include "HeroPlayerController.h"
 #include "Player/CubeHero.h"
-
+#include "AbilitySystemComponent.h"
 
 
 AHeroPlayerController::AHeroPlayerController() 
@@ -20,6 +20,12 @@ void AHeroPlayerController::SetupInputComponent()
 
 	InputComponent->BindAxis("HorizontalMovement", this, &AHeroPlayerController::HorizontalMovement);
 	InputComponent->BindAxis("VerticalMovement", this, &AHeroPlayerController::VerticalMovement);
+
+	/*ACubeHero* Hero = Cast<ACubeHero>(GetPawn());
+	if (Hero)
+	{
+		Hero->AbilitySystem->BindAbilityActivationToInputComponent(InputComponent, FGameplayAbilityInputBinds("ConfirmInput", "CancelInput", "AbilityInput"));
+	}*/
 }
 
 void AHeroPlayerController::Tick(float DeltaTime)
