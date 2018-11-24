@@ -1,9 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CubeHero.h"
+#include "CubeArena.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
+
+FName ACubeHero::AbilitySystemName(TEXT("AbilitySystem"));
 
 // Sets default values
 ACubeHero::ACubeHero()
@@ -25,8 +29,15 @@ ACubeHero::ACubeHero()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm, USpringArmComponent::SocketName);
 
-	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
+	// The ability system component.
+	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(ACubeHero::AbilitySystemName);
+	AbilitySystem->SetIsReplicated(true);
 
+	// The attribute set
+	AttributeSet = CreateDefaultSubobject<UCoreAttributeSet>(TEXT("AttributeSet"));
+
+	CharacterLevel = 1;
+	bAbilitiesInitialized = false;
 }
 
 // Called when the game starts or when spawned
@@ -42,7 +53,21 @@ void ACubeHero::BeginPlay()
 			AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability.GetDefaultObject(), 1, 0));
 		}
 		AbilitySystem->InitAbilityActorInfo(this, this);
+
+		//AbilitySystem.GetOrCreateAttributeSubobject(AttributeSets[0]);
+
+		for (TSubclassOf<UAttributeSet>& Set : AttributeSets)
+		{
+			AbilitySystem->InitStats(Set, nullptr);
+		}
 	}
+}
+
+void ACubeHero::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACubeHero, CharacterLevel);
 }
 
 // Called every frame
@@ -68,3 +93,61 @@ void ACubeHero::PossessedBy(AController* NewController)
 	AbilitySystem->RefreshAbilityActorInfo();
 }
 
+float ACubeHero::GetHealth() const
+{
+	return AttributeSet->GetHealth();
+}
+
+float ACubeHero::GetMaxHealth() const
+{
+	return AttributeSet->GetMaxHealth();
+}
+
+float ACubeHero::GetHealthPerSecond() const
+{
+	return AttributeSet->GetHealthPerSecond();
+}
+
+
+void ACubeHero::AddStartupGameplayAbilities()
+{
+	check(AbilitySystem);
+
+	if (Role == ROLE_Authority && !bAbilitiesInitialized)
+	{
+		// Do something here
+
+
+		// Apply the passives
+		for (TSubclassOf<UGameplayEffect>& GameplayEffect : PassiveGameplayEffects)
+		{
+			FGameplayEffectContextHandle EffectContext = AbilitySystem->MakeEffectContext();
+			EffectContext.AddSourceObject(this);
+
+			FGameplayEffectSpecHandle NewHandle = AbilitySystem->MakeOutgoingSpec(GameplayEffect, CharacterLevel, EffectContext);
+			if (NewHandle.IsValid())
+			{
+
+			}
+		}
+	}
+
+}
+
+int32 ACubeHero::GetCharacterLevel() const
+{
+	return CharacterLevel;
+}
+
+bool ACubeHero::SetCharacterLevel(int32 NewLevel)
+{
+	if (CharacterLevel != NewLevel && NewLevel > 0)
+	{
+		// Remove abilties;
+		CharacterLevel = NewLevel;
+		AddStartupGameplayAbilities();
+
+		return true;
+	}
+	return false;
+}

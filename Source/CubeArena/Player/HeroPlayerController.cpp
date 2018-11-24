@@ -2,12 +2,19 @@
 
 #include "HeroPlayerController.h"
 #include "Player/CubeHero.h"
+#include "UObject/ConstructorHelpers.h"
 #include "AbilitySystemComponent.h"
-
+#include "Widgets/PlayerHUD/HeroHUDWidget.h"
 
 AHeroPlayerController::AHeroPlayerController() 
 {
 	bShowMouseCursor = true;
+
+	static ConstructorHelpers::FObjectFinder<UClass> HeroHUD_BP(TEXT("/Game/UI/PlayerHUD/HeroHUD_BP.HeroHUD_BP_C"));
+	if (HeroHUD_BP.Object)
+	{
+		HUDWidgetClass = HeroHUD_BP.Object;
+	}
 }
 
 void AHeroPlayerController::SetupInputComponent()
@@ -115,4 +122,28 @@ void AHeroPlayerController::Jump()
 	{
 		Hero->Jump();
 	}
+}
+
+void AHeroPlayerController::Possess(APawn* NewPawn)
+{
+	Super::Possess(NewPawn);
+
+	if (NewPawn)
+	{
+		// Notify stuff
+
+		if (HUDWidgetClass)
+		{
+			HUDWidget = CreateWidget<UHeroHUDWidget>(this, HUDWidgetClass);
+			if (HUDWidget)
+			{
+				HUDWidget->AddToViewport();
+			}
+		}
+	}
+}
+
+void AHeroPlayerController::UnPossess()
+{
+	Super::UnPossess();
 }

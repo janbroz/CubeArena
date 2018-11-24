@@ -20,6 +20,9 @@ public:
 public:
 	virtual void SetupInputComponent() override;
 	virtual void Tick(float DeltaTime) override;
+	virtual void Possess(APawn* NewPawn) override;
+	virtual void UnPossess() override;
+
 public:
 	// Player movement
 	void HorizontalMovement(float Amount);
@@ -33,5 +36,9 @@ public:
 	void AlignHeroToMouseLoc(FVector MouseLoc);
 	UFUNCTION(Reliable, Server, WithValidation)
 		void Server_AlignHeroToMouseLoc(FVector MouseLoc);
+
+public:
+	TSubclassOf<class UHeroHUDWidget> HUDWidgetClass;
+	class UHeroHUDWidget* HUDWidget;
 
 };
