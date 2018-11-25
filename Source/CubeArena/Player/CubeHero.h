@@ -52,6 +52,14 @@ public:
 	// Initial setup of the stats
 	void AddStartupGameplayAbilities();
 
+	// Handle att modification
+	UFUNCTION(BlueprintImplementableEvent)
+		void OnHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags);
+
+	virtual void HandleHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags);
+
+
+
 public:
 	UPROPERTY(BlueprintReadWrite, Category = "PlayerInformation")
 		class UCameraComponent* Camera;

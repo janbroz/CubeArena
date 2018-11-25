@@ -46,21 +46,21 @@ void ACubeHero::BeginPlay()
 	Super::BeginPlay();
 	
 
-	if (AbilitySystem)
-	{
-		if (HasAuthority() && Ability)
-		{
-			AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability.GetDefaultObject(), 1, 0));
-		}
-		AbilitySystem->InitAbilityActorInfo(this, this);
+	//if (AbilitySystem)
+	//{
+	//	if (HasAuthority() && Ability)
+	//	{
+	//		AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability.GetDefaultObject(), 1, 0));
+	//	}
+	//	AbilitySystem->InitAbilityActorInfo(this, this);
 
-		//AbilitySystem.GetOrCreateAttributeSubobject(AttributeSets[0]);
+	//	//AbilitySystem.GetOrCreateAttributeSubobject(AttributeSets[0]);
 
-		for (TSubclassOf<UAttributeSet>& Set : AttributeSets)
-		{
-			AbilitySystem->InitStats(Set, nullptr);
-		}
-	}
+	//	for (TSubclassOf<UAttributeSet>& Set : AttributeSets)
+	//	{
+	//		AbilitySystem->InitStats(Set, nullptr);
+	//	}
+	//}
 }
 
 void ACubeHero::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -91,6 +91,12 @@ void ACubeHero::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	AbilitySystem->RefreshAbilityActorInfo();
+
+	if (AbilitySystem)
+	{
+		AbilitySystem->InitAbilityActorInfo(this, this);
+		AddStartupGameplayAbilities();
+	}
 }
 
 float ACubeHero::GetHealth() const
@@ -127,11 +133,10 @@ void ACubeHero::AddStartupGameplayAbilities()
 			FGameplayEffectSpecHandle NewHandle = AbilitySystem->MakeOutgoingSpec(GameplayEffect, CharacterLevel, EffectContext);
 			if (NewHandle.IsValid())
 			{
-
+				FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystem->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystem);
 			}
 		}
 	}
-
 }
 
 int32 ACubeHero::GetCharacterLevel() const
@@ -150,4 +155,12 @@ bool ACubeHero::SetCharacterLevel(int32 NewLevel)
 		return true;
 	}
 	return false;
+}
+
+void ACubeHero::HandleHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags)
+{
+	if (bAbilitiesInitialized)
+	{
+		OnHealthChanged(DeltaValue, EventTags);
+	}
 }

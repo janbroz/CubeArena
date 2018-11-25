@@ -55,6 +55,10 @@ public:
 		FGameplayAttributeData Stamina;
 
 protected:
+	// Proportionally adjust the attribute according to the max value
+	void AdjustAttributeForMaxChange(FGameplayAttributeData& AffectedAttribute, const FGameplayAttributeData& MaxAttribute, float NewMaxValue, const FGameplayAttribute& AffectedAttributeProperty);
+
+
 	UFUNCTION()
 		virtual void OnRep_Health();
 	UFUNCTION()
