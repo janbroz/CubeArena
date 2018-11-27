@@ -136,6 +136,8 @@ void ACubeHero::AddStartupGameplayAbilities()
 				FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystem->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystem);
 			}
 		}
+
+		bAbilitiesInitialized = true;
 	}
 }
 

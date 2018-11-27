@@ -50,8 +50,6 @@ void UCoreAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 {
 	Super::PostGameplayEffectExecute(Data);
 
-	UE_LOG(LogTemp, Warning, TEXT("Post gameplay effect called"));
-
 	FGameplayEffectContextHandle Context = Data.EffectSpec.GetContext();
 	UAbilitySystemComponent* Source = Context.GetOriginalInstigatorAbilitySystemComponent();
 	const FGameplayTagContainer& SourceTags = *Data.EffectSpec.CapturedSourceTags.GetAggregatedTags();
@@ -69,16 +67,16 @@ void UCoreAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("The stat modified is the health"));
-
+		if (TargetCharacter)
+		{
+			TargetCharacter->HandleHealthChanged(0.f, SourceTags);
+		}
 
 	}
 	else if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("It is the max health attribute man"));
 		if (TargetCharacter)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("It is a valid character and should update the health change"));
 			TargetCharacter->HandleHealthChanged(0.f, SourceTags);
 		}
 		else
