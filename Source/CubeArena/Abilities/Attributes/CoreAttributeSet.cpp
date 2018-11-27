@@ -2,6 +2,9 @@
 
 #include "CoreAttributeSet.h"
 #include "CubeArena.h"
+#include "GameplayEffect.h"
+#include "GameplayEffectExtension.h"
+#include "Player/CubeHero.h"
 
 UCoreAttributeSet::UCoreAttributeSet()
 	: Health(10.f)
@@ -43,9 +46,52 @@ void UCoreAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	}
 }
 
-void UCoreAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data)
+void UCoreAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+
+	UE_LOG(LogTemp, Warning, TEXT("Post gameplay effect called"));
+
+	FGameplayEffectContextHandle Context = Data.EffectSpec.GetContext();
+	UAbilitySystemComponent* Source = Context.GetOriginalInstigatorAbilitySystemComponent();
+	const FGameplayTagContainer& SourceTags = *Data.EffectSpec.CapturedSourceTags.GetAggregatedTags();
+
+	AActor* TargetActor = nullptr;
+	AController* TargetController = nullptr;
+	ACubeHero* TargetCharacter = nullptr;
+	if (Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
+	{
+		TargetActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
+		TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
+		TargetCharacter = Cast<ACubeHero>(TargetActor);
+	}
+
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("The stat modified is the health"));
+
+
+	}
+	else if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("It is the max health attribute man"));
+		if (TargetCharacter)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("It is a valid character and should update the health change"));
+			TargetCharacter->HandleHealthChanged(0.f, SourceTags);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Not a valid target to do this"));
+
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("The stat modified is not the health"));
+		UE_LOG(LogTemp, Warning, TEXT("This is the att: %s"), *Data.EvaluatedData.Attribute.AttributeName);
+	}
 
 }
 

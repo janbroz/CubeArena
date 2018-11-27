@@ -8,7 +8,19 @@ public class CubeArena : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "OnlineSubsystem", "OnlineSubsystemUtils", "GameplayAbilities" });
+		PublicDependencyModuleNames.AddRange(
+            new string[] {
+                "Core",
+                "CoreUObject",
+                "Engine",
+                "InputCore",
+                "OnlineSubsystem",
+                "OnlineSubsystemUtils",
+                "GameplayAbilities",
+                "GameplayTags",
+                "GameplayTasks"
+            }
+        );
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

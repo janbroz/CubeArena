@@ -17,5 +17,7 @@ class CUBEARENA_API UHeroHUDWidget : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 	
+	UFUNCTION(BlueprintImplementableEvent)
+		void UpdateHealthValues();
 	
 };

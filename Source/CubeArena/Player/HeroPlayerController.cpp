@@ -147,3 +147,11 @@ void AHeroPlayerController::UnPossess()
 {
 	Super::UnPossess();
 }
+
+void AHeroPlayerController::UpdateHealthValues()
+{
+	if (HUDWidget)
+	{
+		HUDWidget->UpdateHealthValues();
+	}
+}

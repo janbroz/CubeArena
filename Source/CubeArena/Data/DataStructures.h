@@ -36,6 +36,9 @@ enum class AbilityInput : uint8
 	UseAbility4		UMETA(DisplayName = "Use Spell 4"),
 };
 
+
+
+
 class CUBEARENA_API DataStructures
 {
 public:

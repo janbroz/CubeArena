@@ -53,10 +53,9 @@ public:
 	void AddStartupGameplayAbilities();
 
 	// Handle att modification
+	virtual void HandleHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags);
 	UFUNCTION(BlueprintImplementableEvent)
 		void OnHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags);
-
-	virtual void HandleHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags);
 
 
 

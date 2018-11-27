@@ -37,6 +37,11 @@ public:
 	UFUNCTION(Reliable, Server, WithValidation)
 		void Server_AlignHeroToMouseLoc(FVector MouseLoc);
 
+	// HUD and stuff
+public:
+	UFUNCTION(BlueprintCallable)
+	void UpdateHealthValues();
+
 public:
 	TSubclassOf<class UHeroHUDWidget> HUDWidgetClass;
 	class UHeroHUDWidget* HUDWidget;
