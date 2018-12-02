@@ -37,6 +37,17 @@ enum class AbilityInput : uint8
 };
 
 
+// Defines the class our player is using. Gives different bonuses for the attributes
+// according to his class.
+UENUM(BlueprintType)
+enum class EHeroClass : uint8
+{
+	Warrior			UMETA(DisplayName = "Warrior"),
+	Caster			UMETA(DisplayName = "Caster"),
+	Ranger			UMETA(DisplayName = "Ranger"),
+	Assassin		UMETA(DisplayName = "Assassin")
+};
+
 
 
 class CUBEARENA_API DataStructures

@@ -43,15 +43,15 @@ public:
 
 
 	// For later
-	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_MovementSpeed)
 		FGameplayAttributeData MovementSpeed;
-	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_Strength)
 		FGameplayAttributeData Strength;
-	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_Agility)
 		FGameplayAttributeData Agility;
-	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_Intellect)
 		FGameplayAttributeData Intellect;
-	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_Stamina)
 		FGameplayAttributeData Stamina;
 
 protected:
@@ -65,4 +65,16 @@ protected:
 		virtual void OnRep_MaxHealth();
 	UFUNCTION()
 		virtual void OnRep_HealthPerSecond();
+	UFUNCTION()
+		virtual void OnRep_MovementSpeed();
+	UFUNCTION()
+		virtual void OnRep_Strength();
+	UFUNCTION()
+		virtual void OnRep_Agility();
+	UFUNCTION()
+		virtual void OnRep_Intellect();
+	UFUNCTION()
+		virtual void OnRep_Stamina();
+
+
 };

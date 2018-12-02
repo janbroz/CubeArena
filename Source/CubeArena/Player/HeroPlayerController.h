@@ -30,6 +30,7 @@ public:
 	void LeftMouseButton();
 	void RightMouseButton();
 	void Jump();
+	void ToggleStats();
 	
 	// Player mouse interaction
 	void UpdateLocalMouseLoc();
@@ -46,4 +47,11 @@ public:
 	TSubclassOf<class UHeroHUDWidget> HUDWidgetClass;
 	class UHeroHUDWidget* HUDWidget;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		uint32 bShowingStats : 1;
+
+private:
+	uint32 bHasCharacterSelected : 1;
+	uint32 bShowingScore : 1;
+	uint32 bShowingInventory : 1;
 };

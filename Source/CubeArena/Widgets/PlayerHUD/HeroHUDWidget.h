@@ -19,5 +19,8 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 		void UpdateHealthValues();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void ToggleStatsView(bool ShowWidget);
 	
 };

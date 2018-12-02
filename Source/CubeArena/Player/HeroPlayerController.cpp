@@ -24,6 +24,7 @@ void AHeroPlayerController::SetupInputComponent()
 	InputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &AHeroPlayerController::Jump);
 	InputComponent->BindAction("LeftMouseButton", EInputEvent::IE_Pressed, this, &AHeroPlayerController::LeftMouseButton);
 	InputComponent->BindAction("RightMouseButton", EInputEvent::IE_Pressed, this, &AHeroPlayerController::RightMouseButton);
+	InputComponent->BindAction("ShowStats", EInputEvent::IE_Pressed, this, &AHeroPlayerController::ToggleStats);
 
 	InputComponent->BindAxis("HorizontalMovement", this, &AHeroPlayerController::HorizontalMovement);
 	InputComponent->BindAxis("VerticalMovement", this, &AHeroPlayerController::VerticalMovement);
@@ -113,6 +114,12 @@ void AHeroPlayerController::LeftMouseButton()
 void AHeroPlayerController::RightMouseButton()
 {
 
+}
+
+void AHeroPlayerController::ToggleStats()
+{
+	bShowingStats = !bShowingStats;
+	HUDWidget->ToggleStatsView(bShowingStats);
 }
 
 void AHeroPlayerController::Jump()

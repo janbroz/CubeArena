@@ -19,7 +19,12 @@ void UCoreAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 
 	DOREPLIFETIME(UCoreAttributeSet, Health);
 	DOREPLIFETIME(UCoreAttributeSet, MaxHealth);
+	DOREPLIFETIME(UCoreAttributeSet, HealthPerSecond);
 	DOREPLIFETIME(UCoreAttributeSet, MovementSpeed);
+	DOREPLIFETIME(UCoreAttributeSet, Strength);
+	DOREPLIFETIME(UCoreAttributeSet, Stamina);
+	DOREPLIFETIME(UCoreAttributeSet, Agility);
+	DOREPLIFETIME(UCoreAttributeSet, Intellect);
 }
 
 void UCoreAttributeSet::AdjustAttributeForMaxChange(FGameplayAttributeData& AffectedAttribute, const FGameplayAttributeData& MaxAttribute, float NewMaxValue, const FGameplayAttribute& AffectedAttributeProperty)
@@ -107,3 +112,18 @@ void UCoreAttributeSet::OnRep_HealthPerSecond()
 {
 
 }
+
+void UCoreAttributeSet::OnRep_MovementSpeed()
+{}
+
+void UCoreAttributeSet::OnRep_Strength()
+{}
+
+void UCoreAttributeSet::OnRep_Agility()
+{}
+
+void UCoreAttributeSet::OnRep_Intellect()
+{}
+
+void UCoreAttributeSet::OnRep_Stamina()
+{}
