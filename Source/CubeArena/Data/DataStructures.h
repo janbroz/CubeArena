@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "DataStructures.generated.h"
 
 /**
@@ -46,6 +47,19 @@ enum class EHeroClass : uint8
 	Caster			UMETA(DisplayName = "Caster"),
 	Ranger			UMETA(DisplayName = "Ranger"),
 	Assassin		UMETA(DisplayName = "Assassin")
+};
+
+USTRUCT(Blueprintable)
+struct FClassInformation : public FTableRowBase
+{
+	GENERATED_BODY()
+public:
+	FClassInformation()
+		: ClassName()
+	{}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HeroTable)
+		FString ClassName;
 };
 
 

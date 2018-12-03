@@ -5,6 +5,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "AbilitySystemComponent.h"
 #include "Widgets/PlayerHUD/HeroHUDWidget.h"
+#include "Widgets/PlayerHUD/HeroSelectionWidget.h"
 
 AHeroPlayerController::AHeroPlayerController() 
 {
@@ -14,6 +15,29 @@ AHeroPlayerController::AHeroPlayerController()
 	if (HeroHUD_BP.Object)
 	{
 		HUDWidgetClass = HeroHUD_BP.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UClass> HeroSelection_BP(TEXT("/Game/UI/PlayerHUD/HeroSelection_BP.HeroSelection_BP_C"));
+	if (HeroSelection_BP.Object)
+	{
+		HeroSelectionClass = HeroSelection_BP.Object;
+	}
+}
+
+void AHeroPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (!bHasCharacterSelected)
+	{
+		if (HeroSelectionClass)
+		{
+			HeroSelectionWidget = CreateWidget<UHeroSelectionWidget>(this, HeroSelectionClass);
+			if (HeroSelectionWidget)
+			{
+				HeroSelectionWidget->AddToViewport();
+			}
+		}
 	}
 }
 

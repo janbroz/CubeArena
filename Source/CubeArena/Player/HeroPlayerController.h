@@ -22,6 +22,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void Possess(APawn* NewPawn) override;
 	virtual void UnPossess() override;
+	virtual void BeginPlay() override;
 
 public:
 	// Player movement
@@ -46,6 +47,8 @@ public:
 public:
 	TSubclassOf<class UHeroHUDWidget> HUDWidgetClass;
 	class UHeroHUDWidget* HUDWidget;
+	TSubclassOf<class UHeroSelectionWidget> HeroSelectionClass;
+	class UHeroSelectionWidget* HeroSelectionWidget;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		uint32 bShowingStats : 1;
