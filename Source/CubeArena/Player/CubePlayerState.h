@@ -23,4 +23,9 @@ public:
 		void ServerSelectCharacter(TSubclassOf<class ACubeHero> CharacterToSelect);
 	UFUNCTION()
 		void OnRep_CharacterSelected();
+
+
+public:
+	UPROPERTY(Transient, ReplicatedUsing = OnRep_CharacterSelected, BlueprintReadOnly)
+		uint32 bHasCharacterSelected : 1;
 };

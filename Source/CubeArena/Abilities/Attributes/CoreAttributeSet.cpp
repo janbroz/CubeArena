@@ -10,6 +10,10 @@ UCoreAttributeSet::UCoreAttributeSet()
 	: Health(10.f)
 	, MaxHealth(10.f)
 	, MovementSpeed(1.f)
+	, Strength(1.f)
+	, Intellect(1.f)
+	, Agility(1.f)
+	, Stamina(1.f)
 {
 }
 

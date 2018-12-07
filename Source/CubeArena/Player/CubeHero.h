@@ -43,7 +43,14 @@ public:
 		virtual float GetMaxHealth() const;
 	UFUNCTION(BlueprintCallable)
 		virtual float GetHealthPerSecond() const;
-
+	UFUNCTION(BlueprintCallable)
+		virtual float GetStrength() const;
+	UFUNCTION(BlueprintCallable)
+		virtual float GetStamina() const;
+	UFUNCTION(BlueprintCallable)
+		virtual float GetIntellect() const;
+	UFUNCTION(BlueprintCallable)
+		virtual float GetAgility() const;
 	UFUNCTION(BlueprintCallable)
 		virtual int32 GetCharacterLevel() const;
 	UFUNCTION(BlueprintCallable)

@@ -159,6 +159,11 @@ void AHeroPlayerController::Possess(APawn* NewPawn)
 {
 	Super::Possess(NewPawn);
 
+	if (HeroSelectionWidget)
+	{
+		HeroSelectionWidget->RemoveFromParent();
+	}
+
 	if (NewPawn)
 	{
 		// Notify stuff

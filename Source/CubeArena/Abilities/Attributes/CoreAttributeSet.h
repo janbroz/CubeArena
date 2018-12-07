@@ -45,14 +45,23 @@ public:
 	// For later
 	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_MovementSpeed)
 		FGameplayAttributeData MovementSpeed;
+	ATTRIBUTE_ACCESSORS(UCoreAttributeSet, MovementSpeed);
+	
 	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_Strength)
 		FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UCoreAttributeSet, Strength);
+
 	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_Agility)
 		FGameplayAttributeData Agility;
+	ATTRIBUTE_ACCESSORS(UCoreAttributeSet, Agility)
+
 	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_Intellect)
 		FGameplayAttributeData Intellect;
+	ATTRIBUTE_ACCESSORS(UCoreAttributeSet, Intellect)
+
 	UPROPERTY(Category = "Core Attributes", EditAnywhere, BlueprintReadWrite, ReplicatedUsing=OnRep_Stamina)
 		FGameplayAttributeData Stamina;
+	ATTRIBUTE_ACCESSORS(UCoreAttributeSet, Stamina);
 
 protected:
 	// Proportionally adjust the attribute according to the max value

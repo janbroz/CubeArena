@@ -49,6 +49,15 @@ enum class EHeroClass : uint8
 	Assassin		UMETA(DisplayName = "Assassin")
 };
 
+UENUM(BlueprintType)
+enum class EStatName : uint8
+{
+	Strength		UMETA(DisplayName = "Strength"),
+	Agility			UMETA(DisplayName = "Agility"),
+	Intellect		UMETA(DisplayName = "Intellect"),
+	Stamina			UMETA(DisplayName = "Stamina")
+};
+
 USTRUCT(Blueprintable)
 struct FClassInformation : public FTableRowBase
 {

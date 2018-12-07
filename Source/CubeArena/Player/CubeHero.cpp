@@ -114,6 +114,25 @@ float ACubeHero::GetHealthPerSecond() const
 	return AttributeSet->GetHealthPerSecond();
 }
 
+float ACubeHero::GetStrength() const
+{
+	return AttributeSet->GetStrength();
+}
+
+float ACubeHero::GetStamina() const
+{
+	return AttributeSet->GetStamina();
+}
+
+float ACubeHero::GetAgility() const
+{
+	return AttributeSet->GetAgility();
+}
+
+float ACubeHero::GetIntellect() const
+{
+	return AttributeSet->GetIntellect();
+}
 
 void ACubeHero::AddStartupGameplayAbilities()
 {
