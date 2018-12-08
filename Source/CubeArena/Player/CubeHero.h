@@ -65,6 +65,12 @@ public:
 		void OnHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags);
 
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void MainAttack();
+	UFUNCTION(BlueprintImplementableEvent)
+		void SecondaryAttack();
+
+
 
 public:
 	UPROPERTY(BlueprintReadWrite, Category = "PlayerInformation")
