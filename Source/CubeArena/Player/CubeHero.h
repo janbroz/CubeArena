@@ -58,6 +58,9 @@ public:
 
 	// Initial setup of the stats
 	void AddStartupGameplayAbilities();
+	// Gain an ability
+	UFUNCTION(BlueprintCallable)
+		void AquireAbility(TSubclassOf<UGameplayAbility> NewAbility);
 
 	// Handle att modification
 	virtual void HandleHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags);

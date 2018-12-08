@@ -132,7 +132,11 @@ bool AHeroPlayerController::Server_AlignHeroToMouseLoc_Validate(FVector MouseLoc
 
 void AHeroPlayerController::LeftMouseButton()
 {
-
+	ACubeHero* Hero = Cast<ACubeHero>(GetPawn());
+	if (Hero)
+	{
+		Hero->MainAttack();
+	}
 }
 
 void AHeroPlayerController::RightMouseButton()

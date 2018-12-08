@@ -160,6 +160,21 @@ void ACubeHero::AddStartupGameplayAbilities()
 	}
 }
 
+void ACubeHero::AquireAbility(TSubclassOf<UGameplayAbility> NewAbility)
+{
+	if (AbilitySystem)
+	{
+		if (HasAuthority() && NewAbility)
+		{
+			FGameplayAbilitySpecDef SpecDef = FGameplayAbilitySpecDef();
+			SpecDef.Ability = NewAbility;
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SpecDef, 1);
+			AbilitySystem->GiveAbility(AbilitySpec);
+		}
+		AbilitySystem->InitAbilityActorInfo(this, this);
+	}
+}
+
 int32 ACubeHero::GetCharacterLevel() const
 {
 	return CharacterLevel;
