@@ -20,6 +20,10 @@ public:
 public:
 	virtual void SetupInputComponent() override;
 	virtual void Tick(float DeltaTime) override;
+	virtual void Possess(APawn* NewPawn) override;
+	virtual void UnPossess() override;
+	virtual void BeginPlay() override;
+
 public:
 	// Player movement
 	void HorizontalMovement(float Amount);
@@ -27,6 +31,7 @@ public:
 	void LeftMouseButton();
 	void RightMouseButton();
 	void Jump();
+	void ToggleStats();
 	
 	// Player mouse interaction
 	void UpdateLocalMouseLoc();
@@ -34,4 +39,22 @@ public:
 	UFUNCTION(Reliable, Server, WithValidation)
 		void Server_AlignHeroToMouseLoc(FVector MouseLoc);
 
+	// HUD and stuff
+public:
+	UFUNCTION(BlueprintCallable)
+	void UpdateHealthValues();
+
+public:
+	TSubclassOf<class UHeroHUDWidget> HUDWidgetClass;
+	class UHeroHUDWidget* HUDWidget;
+	TSubclassOf<class UHeroSelectionWidget> HeroSelectionClass;
+	class UHeroSelectionWidget* HeroSelectionWidget;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		uint32 bShowingStats : 1;
+
+private:
+	uint32 bHasCharacterSelected : 1;
+	uint32 bShowingScore : 1;
+	uint32 bShowingInventory : 1;
 };

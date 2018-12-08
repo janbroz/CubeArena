@@ -2,12 +2,43 @@
 
 #include "HeroPlayerController.h"
 #include "Player/CubeHero.h"
-
-
+#include "UObject/ConstructorHelpers.h"
+#include "AbilitySystemComponent.h"
+#include "Widgets/PlayerHUD/HeroHUDWidget.h"
+#include "Widgets/PlayerHUD/HeroSelectionWidget.h"
 
 AHeroPlayerController::AHeroPlayerController() 
 {
 	bShowMouseCursor = true;
+
+	static ConstructorHelpers::FObjectFinder<UClass> HeroHUD_BP(TEXT("/Game/UI/PlayerHUD/HeroHUD_BP.HeroHUD_BP_C"));
+	if (HeroHUD_BP.Object)
+	{
+		HUDWidgetClass = HeroHUD_BP.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UClass> HeroSelection_BP(TEXT("/Game/UI/PlayerHUD/HeroSelection_BP.HeroSelection_BP_C"));
+	if (HeroSelection_BP.Object)
+	{
+		HeroSelectionClass = HeroSelection_BP.Object;
+	}
+}
+
+void AHeroPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (!bHasCharacterSelected)
+	{
+		if (HeroSelectionClass)
+		{
+			HeroSelectionWidget = CreateWidget<UHeroSelectionWidget>(this, HeroSelectionClass);
+			if (HeroSelectionWidget)
+			{
+				HeroSelectionWidget->AddToViewport();
+			}
+		}
+	}
 }
 
 void AHeroPlayerController::SetupInputComponent()
@@ -17,9 +48,16 @@ void AHeroPlayerController::SetupInputComponent()
 	InputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &AHeroPlayerController::Jump);
 	InputComponent->BindAction("LeftMouseButton", EInputEvent::IE_Pressed, this, &AHeroPlayerController::LeftMouseButton);
 	InputComponent->BindAction("RightMouseButton", EInputEvent::IE_Pressed, this, &AHeroPlayerController::RightMouseButton);
+	InputComponent->BindAction("ShowStats", EInputEvent::IE_Pressed, this, &AHeroPlayerController::ToggleStats);
 
 	InputComponent->BindAxis("HorizontalMovement", this, &AHeroPlayerController::HorizontalMovement);
 	InputComponent->BindAxis("VerticalMovement", this, &AHeroPlayerController::VerticalMovement);
+
+	/*ACubeHero* Hero = Cast<ACubeHero>(GetPawn());
+	if (Hero)
+	{
+		Hero->AbilitySystem->BindAbilityActivationToInputComponent(InputComponent, FGameplayAbilityInputBinds("ConfirmInput", "CancelInput", "AbilityInput"));
+	}*/
 }
 
 void AHeroPlayerController::Tick(float DeltaTime)
@@ -94,12 +132,22 @@ bool AHeroPlayerController::Server_AlignHeroToMouseLoc_Validate(FVector MouseLoc
 
 void AHeroPlayerController::LeftMouseButton()
 {
-
+	ACubeHero* Hero = Cast<ACubeHero>(GetPawn());
+	if (Hero)
+	{
+		Hero->MainAttack();
+	}
 }
 
 void AHeroPlayerController::RightMouseButton()
 {
 
+}
+
+void AHeroPlayerController::ToggleStats()
+{
+	bShowingStats = !bShowingStats;
+	HUDWidget->ToggleStatsView(bShowingStats);
 }
 
 void AHeroPlayerController::Jump()
@@ -108,5 +156,42 @@ void AHeroPlayerController::Jump()
 	if (Hero)
 	{
 		Hero->Jump();
+	}
+}
+
+void AHeroPlayerController::Possess(APawn* NewPawn)
+{
+	Super::Possess(NewPawn);
+
+	if (HeroSelectionWidget)
+	{
+		HeroSelectionWidget->RemoveFromParent();
+	}
+
+	if (NewPawn)
+	{
+		// Notify stuff
+
+		if (HUDWidgetClass)
+		{
+			HUDWidget = CreateWidget<UHeroHUDWidget>(this, HUDWidgetClass);
+			if (HUDWidget)
+			{
+				HUDWidget->AddToViewport();
+			}
+		}
+	}
+}
+
+void AHeroPlayerController::UnPossess()
+{
+	Super::UnPossess();
+}
+
+void AHeroPlayerController::UpdateHealthValues()
+{
+	if (HUDWidget)
+	{
+		HUDWidget->UpdateHealthValues();
 	}
 }

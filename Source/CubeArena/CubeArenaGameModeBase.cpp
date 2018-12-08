@@ -2,12 +2,13 @@
 
 #include "CubeArenaGameModeBase.h"
 #include "Player/CubeHero.h"
+#include "Player/CubePlayerState.h"
 #include "Player/HeroPlayerController.h"
 #include "UObject/ConstructorHelpers.h"
 
 ACubeArenaGameModeBase::ACubeArenaGameModeBase()
 {
-	static ConstructorHelpers::FObjectFinder<UClass> Hero_Bp(TEXT("/Game/Characters/PrototypeHero/ProtoCube.ProtoCube_C"));
+	/*static ConstructorHelpers::FObjectFinder<UClass> Hero_Bp(TEXT("/Game/Characters/PrototypeHero/ProtoCube.ProtoCube_C"));
 	if (Hero_Bp.Object)
 	{
 		DefaultPawnClass = Hero_Bp.Object;
@@ -15,7 +16,9 @@ ACubeArenaGameModeBase::ACubeArenaGameModeBase()
 	else
 	{
 		DefaultPawnClass = ACubeHero::StaticClass();
-	}
+	}*/
 
 	PlayerControllerClass = AHeroPlayerController::StaticClass();
+	DefaultPawnClass = NULL;
+	PlayerStateClass = ACubePlayerState::StaticClass();
 }
