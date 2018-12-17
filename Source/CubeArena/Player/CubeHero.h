@@ -80,6 +80,8 @@ public:
 		class UCameraComponent* Camera;
 	UPROPERTY(BlueprintReadWrite, Category = "PlayerInformation")
 		class USpringArmComponent* CameraArm;
+	UPROPERTY(BlueprintReadWrite, Category = "PlayerInformation")
+		class UInventoryComponent* InventoryComponent;
 
 	// Character level
 	UPROPERTY(EditAnywhere, Replicated, Category = Abilities)

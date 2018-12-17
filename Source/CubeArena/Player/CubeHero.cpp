@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
+#include "Player/InventoryComponent.h"
 
 FName ACubeHero::AbilitySystemName(TEXT("AbilitySystem"));
 
@@ -25,9 +26,12 @@ ACubeHero::ACubeHero()
 	CameraArm->bUsePawnControlRotation = false;
 
 	bUseControllerRotationPitch = true;
-
+	
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm, USpringArmComponent::SocketName);
+
+	// The inventory component
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory component"));
 
 	// The ability system component.
 	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(ACubeHero::AbilitySystemName);

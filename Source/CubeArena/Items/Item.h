@@ -24,5 +24,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	
+
+public:
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Weapon information")
+		UStaticMeshComponent* MeshComponent;
 	
 };

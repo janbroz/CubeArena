@@ -11,6 +11,10 @@ UInventoryComponent::UInventoryComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+
+	// Backpack initialization
+	BackpackMaxSlots = 6;
+	BackpackUsedSlots = 0;
 }
 
 
@@ -30,5 +34,10 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UInventoryComponent::EquipItem(AItem * ItemToEquip)
+{
+
 }
 

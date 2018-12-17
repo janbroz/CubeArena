@@ -24,6 +24,18 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
-	
+
+	// Equip an item
+	UFUNCTION()
+		void EquipItem(class AItem* ItemToEquip);
+
+
+public:
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = Inventory)
+		TArray<class AItem*> Backpack;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = Inventory)
+		int32 BackpackMaxSlots;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = Inventory)
+		int32 BackpackUsedSlots;
+
 };
