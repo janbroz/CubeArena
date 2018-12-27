@@ -14,6 +14,8 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChangeDelegate, float, Health, float, MaxHealth);
+
 /**
  * 
  */
@@ -85,5 +87,6 @@ protected:
 	UFUNCTION()
 		virtual void OnRep_Stamina();
 
-
+public:
+	FOnHealthChangeDelegate OnHealthChange;
 };

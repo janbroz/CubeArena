@@ -26,7 +26,7 @@ public:
 
 
 	// Equip an item
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void EquipItem(class AItem* ItemToEquip);
 
 
@@ -37,5 +37,10 @@ public:
 		int32 BackpackMaxSlots;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = Inventory)
 		int32 BackpackUsedSlots;
+
+
+	// Weapons and slots
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory)
+		class AWeapon* RightHandWeapon;
 
 };

@@ -141,7 +141,11 @@ void AHeroPlayerController::LeftMouseButton()
 
 void AHeroPlayerController::RightMouseButton()
 {
-
+	ACubeHero* Hero = Cast<ACubeHero>(GetPawn());
+	if (Hero)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Current health is: %f"), Hero->GetHealth());
+	}
 }
 
 void AHeroPlayerController::ToggleStats()

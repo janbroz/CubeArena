@@ -71,6 +71,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void MainAttack();
 	UFUNCTION(BlueprintImplementableEvent)
+		void NotifyHitActorsByWeapon(const TArray<AActor*>& HitActors);
+
+	UFUNCTION(BlueprintImplementableEvent)
 		void SecondaryAttack();
 
 
@@ -96,7 +99,7 @@ public:
 		TSubclassOf<class UGameplayAbility> Ability;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Abilities)
 		TArray<TSubclassOf<class UAttributeSet>> AttributeSets;
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UCoreAttributeSet* AttributeSet;
 
 	// This is where the initial stats are overrided
@@ -105,5 +108,12 @@ public:
 
 
 	static FName AbilitySystemName;
+
+public:
+	// Experimental UI function
+	UFUNCTION()
+		void OnHealthChangedFromMulticast(float Health, float MaxHealth);
+	UFUNCTION(BlueprintImplementableEvent, Category = "BaseCharacter", meta = (DisplayName = "OnHealthChanged"))
+		void BP_OnHealthChanged(float Health, float MaxHealth);
 
 };

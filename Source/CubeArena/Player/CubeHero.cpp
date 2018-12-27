@@ -49,6 +49,10 @@ void ACubeHero::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (AttributeSet)
+	{
+		AttributeSet->OnHealthChange.AddDynamic(this, &ACubeHero::OnHealthChangedFromMulticast);
+	}
 
 	//if (AbilitySystem)
 	//{
@@ -204,3 +208,10 @@ void ACubeHero::HandleHealthChanged(float DeltaValue, const struct FGameplayTagC
 		OnHealthChanged(DeltaValue, EventTags);
 	}
 }
+
+// This is to update the hero widget hp above the head.
+void ACubeHero::OnHealthChangedFromMulticast(float Health, float MaxHealth)
+{
+	BP_OnHealthChanged(Health, MaxHealth);
+}
+

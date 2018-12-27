@@ -80,7 +80,10 @@ void UCoreAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		{
 			TargetCharacter->HandleHealthChanged(0.f, SourceTags);
 		}
-
+		
+		// Delegate to broadcast the health change
+		OnHealthChange.Broadcast(Health.GetCurrentValue(), MaxHealth.GetCurrentValue());
+		UE_LOG(LogTemp, Warning, TEXT("We tried to change the health"));
 	}
 	else if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
 	{

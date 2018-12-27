@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "InventoryComponent.h"
-
+#include "Items/Item.h"
+#include "Items/Weapon.h"
+#include "Player/CubeHero.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -38,6 +40,16 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 
 void UInventoryComponent::EquipItem(AItem * ItemToEquip)
 {
+	AWeapon* ValidWeapon = Cast<AWeapon>(ItemToEquip);
+	if (ValidWeapon)
+	{
+		ValidWeapon->CharacterOwner = Cast<ACubeHero>(GetOwner());
 
+		if (RightHandWeapon)
+		{
+			
+		}
+		RightHandWeapon = ValidWeapon;
+	}
 }
 
