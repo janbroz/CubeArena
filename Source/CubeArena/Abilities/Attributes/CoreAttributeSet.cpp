@@ -76,6 +76,9 @@ void UCoreAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
+		// Clamp the health value to avoid negative values.
+		Health.SetCurrentValue(FMath::Clamp(Health.GetCurrentValue(), 0.f, MaxHealth.GetCurrentValue()));
+		Health.SetBaseValue(FMath::Clamp(Health.GetBaseValue(), 0.f, MaxHealth.GetBaseValue()));
 		if (TargetCharacter)
 		{
 			TargetCharacter->HandleHealthChanged(0.f, SourceTags);
@@ -96,11 +99,12 @@ void UCoreAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			UE_LOG(LogTemp, Warning, TEXT("Not a valid target to do this"));
 
 		}
+		OnHealthChange.Broadcast(Health.GetCurrentValue(), MaxHealth.GetCurrentValue());
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("The stat modified is not the health"));
-		UE_LOG(LogTemp, Warning, TEXT("This is the att: %s"), *Data.EvaluatedData.Attribute.AttributeName);
+		/*UE_LOG(LogTemp, Warning, TEXT("The stat modified is not the health"));
+		UE_LOG(LogTemp, Warning, TEXT("This is the att: %s"), *Data.EvaluatedData.Attribute.AttributeName);*/
 	}
 
 }

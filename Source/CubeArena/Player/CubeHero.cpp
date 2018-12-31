@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 #include "Player/InventoryComponent.h"
+#include "Player/HeroPlayerController.h"
 
 FName ACubeHero::AbilitySystemName(TEXT("AbilitySystem"));
 
@@ -53,22 +54,6 @@ void ACubeHero::BeginPlay()
 	{
 		AttributeSet->OnHealthChange.AddDynamic(this, &ACubeHero::OnHealthChangedFromMulticast);
 	}
-
-	//if (AbilitySystem)
-	//{
-	//	if (HasAuthority() && Ability)
-	//	{
-	//		AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability.GetDefaultObject(), 1, 0));
-	//	}
-	//	AbilitySystem->InitAbilityActorInfo(this, this);
-
-	//	//AbilitySystem.GetOrCreateAttributeSubobject(AttributeSets[0]);
-
-	//	for (TSubclassOf<UAttributeSet>& Set : AttributeSets)
-	//	{
-	//		AbilitySystem->InitStats(Set, nullptr);
-	//	}
-	//}
 }
 
 void ACubeHero::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -105,6 +90,21 @@ void ACubeHero::PossessedBy(AController* NewController)
 		AbilitySystem->InitAbilityActorInfo(this, this);
 		AddStartupGameplayAbilities();
 	}
+
+	
+}
+
+void ACubeHero::Restart()
+{
+	Super::Restart();
+
+	AHeroPlayerController* HeroController = Cast<AHeroPlayerController>(Controller);
+	if (HeroController)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("I was just possessed, should spawn my ui"));
+		HeroController->SpawnPlayerHUD();
+	}
+	
 }
 
 float ACubeHero::GetHealth() const
@@ -212,6 +212,17 @@ void ACubeHero::HandleHealthChanged(float DeltaValue, const struct FGameplayTagC
 // This is to update the hero widget hp above the head.
 void ACubeHero::OnHealthChangedFromMulticast(float Health, float MaxHealth)
 {
+	if (Health <= 0.0f)
+	{
+		HeroDie();
+	}
+
 	BP_OnHealthChanged(Health, MaxHealth);
+}
+
+void ACubeHero::HeroDie()
+{
+	// It should kill the player, give points and stuff.
+	BP_HeroDie();
 }
 

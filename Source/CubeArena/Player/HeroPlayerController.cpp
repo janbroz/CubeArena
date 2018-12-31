@@ -30,7 +30,7 @@ void AHeroPlayerController::BeginPlay()
 
 	if (!bHasCharacterSelected)
 	{
-		if (HeroSelectionClass)
+		if (HeroSelectionClass && IsLocalController())
 		{
 			HeroSelectionWidget = CreateWidget<UHeroSelectionWidget>(this, HeroSelectionClass);
 			if (HeroSelectionWidget)
@@ -120,6 +120,21 @@ void AHeroPlayerController::AlignHeroToMouseLoc(FVector MouseLoc)
 	}
 }
 
+void AHeroPlayerController::SpawnPlayerHUD()
+{
+	// Only spawn the player hud if it is a local controller.
+	if (IsLocalController() && HUDWidgetClass)
+	{
+
+		UE_LOG(LogTemp, Warning, TEXT("Hero was possesed as local player"));
+		HUDWidget = CreateWidget<UHeroHUDWidget>(this, HUDWidgetClass);
+		if (HUDWidget)
+		{
+			HUDWidget->AddToViewport();
+		}
+	}
+}
+
 void AHeroPlayerController::Server_AlignHeroToMouseLoc_Implementation(FVector MouseLoc)
 {
 	AlignHeroToMouseLoc(MouseLoc);
@@ -167,23 +182,11 @@ void AHeroPlayerController::Possess(APawn* NewPawn)
 {
 	Super::Possess(NewPawn);
 
-	if (HeroSelectionWidget)
+	UE_LOG(LogTemp, Warning, TEXT("Hero was possesed"));
+
+	if (IsLocalController() && HeroSelectionWidget)
 	{
 		HeroSelectionWidget->RemoveFromParent();
-	}
-
-	if (NewPawn)
-	{
-		// Notify stuff
-
-		if (HUDWidgetClass)
-		{
-			HUDWidget = CreateWidget<UHeroHUDWidget>(this, HUDWidgetClass);
-			if (HUDWidget)
-			{
-				HUDWidget->AddToViewport();
-			}
-		}
 	}
 }
 

@@ -40,6 +40,9 @@ public:
 		void Server_AlignHeroToMouseLoc(FVector MouseLoc);
 
 	// HUD and stuff
+	void SpawnPlayerHUD();
+
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateHealthValues();

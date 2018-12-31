@@ -27,13 +27,12 @@ void AWeapon::TraceBlade()
 
 	FVector WeaponHandle = MeshComponent->GetSocketLocation("WeaponHandleSocket");
 	FVector WeaponTip = MeshComponent->GetSocketLocation("WeaponTipSocket");
-	//FHitResult Hit;
 
 	TArray<FHitResult> HitResults;
-	//GetWorld()->LineTraceSingleByChannel(Hit, WeaponHandle, WeaponTip, ECollisionChannel::ECC_Camera);
 	GetWorld()->LineTraceMultiByChannel(HitResults, WeaponHandle, WeaponTip, ECollisionChannel::ECC_Camera);
+	
 	// This one is to see the ray trace in debugging mode.
-	DrawDebugLine(GetWorld(), WeaponHandle, WeaponTip, FColor::Red, false, 5.f, 2, 8.f);
+	//DrawDebugLine(GetWorld(), WeaponHandle, WeaponTip, FColor::Red, false, 5.f, 2, 8.f);
 
 	for (FHitResult& Hit : HitResults)
 	{
@@ -55,20 +54,6 @@ void AWeapon::TraceBlade()
 			}
 		}
 	}
-
-	/*if (Hit.bBlockingHit)
-	{
-		AActor* ValidActor = Hit.GetActor();
-		if (ValidActor)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("We hit the following actor: %s"), *ValidActor->GetName());
-			HitActors.AddUnique(ValidActor);
-			if (CharacterOwner)
-			{
-				CharacterOwner->NotifyHitActorsByWeapon(HitActors);
-			}
-		}
-	}*/
 }
 
 void AWeapon::ToggleTracingBlade()
@@ -77,7 +62,7 @@ void AWeapon::ToggleTracingBlade()
 
 	if (!bTracingBlade)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("It should empty the array"));
+		//UE_LOG(LogTemp, Warning, TEXT("It should empty the array"));
 		HitActors.Empty();
 	}
 }

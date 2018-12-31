@@ -32,8 +32,11 @@ public:
 
 	// Ability interface
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override {return AbilitySystem;}
-
+	
+	// overriding the possesion
 	void PossessedBy(AController* NewController) override;
+	void Restart() override;
+
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -86,6 +89,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "PlayerInformation")
 		class UInventoryComponent* InventoryComponent;
 
+	// Character information
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Class information")
+		UTexture2D* Icon;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Class information")
+		FString HeroName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Class information")
+		FString HeroDetails;
+
+
 	// Character level
 	UPROPERTY(EditAnywhere, Replicated, Category = Abilities)
 		int32 CharacterLevel;
@@ -115,5 +127,8 @@ public:
 		void OnHealthChangedFromMulticast(float Health, float MaxHealth);
 	UFUNCTION(BlueprintImplementableEvent, Category = "BaseCharacter", meta = (DisplayName = "OnHealthChanged"))
 		void BP_OnHealthChanged(float Health, float MaxHealth);
-
+	UFUNCTION()
+		void HeroDie();
+	UFUNCTION(BlueprintImplementableEvent)
+		void BP_HeroDie();
 };
